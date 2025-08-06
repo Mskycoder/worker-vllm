@@ -11,9 +11,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade -r /requirements.txt
 
-# Install vLLM (switching back to pip installs since issues that required building fork are fixed and space optimization is not as important since caching) and FlashInfer 
-RUN python3 -m pip install vllm==0.9.1 && \
-    python3 -m pip install flashinfer -i https://flashinfer.ai/whl/cu121/torch2.3
+# ------------------------------------------------------------------
+# Install PyTorch 2.3 + CUDA 12.8, vLLM 0.10.1 + gptoss and FlashInfer
+# ------------------------------------------------------------------
+RUN python3 -m pip install --upgrade pip && \
+    # 1️⃣  Torch + CUDA 12.8  (stable wheels live in the cu128 index)
+    python3 -m pip install --pre \
+        --extra-index-url https://download.pytorch.org/whl/cu128 \
+        torch==2.3.0+cu128 torchvision==0.18.0+cu128 --index-strategy unsafe-best-match && \
+    # 2️⃣  vLLM build that understands MXFP-4 MoE (lives on the gpt-oss wheel index)
+    python3 -m pip install --pre \
+        --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
+        vllm==0.10.1+gptoss \
+        --index-strategy unsafe-best-match && \
+    # 3️⃣  FlashInfer kernels for Blackwell / Hopper (package is *flashinfer-python*)
+    python3 -m pip install flashinfer-python==0.1.5 \
+        -i https://flashinfer.ai/whl/cu128/torch2.3
 
 # Setup for Option 2: Building the Image with the Model included
 ARG MODEL_NAME=""

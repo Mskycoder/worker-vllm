@@ -17,7 +17,7 @@ RUN python3 -m pip install --upgrade pip && \
         --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
         --extra-index-url https://download.pytorch.org/whl/cu128 \
         vllm==0.10.1+gptoss \
-        flashinfer-python==0.1.5 \
+    python3 -m pip install flashinfer-python \
         -f https://flashinfer.ai/whl/cu128/torch2.7/index.html
 
 # Setup for Option 2: Building the Image with the Model included

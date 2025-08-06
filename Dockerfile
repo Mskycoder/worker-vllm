@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install --pre \
         --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
-        --extra-index-url https://download.pytorch.org/whl/cu128 \
+        --extra-index-url https://download.pytorch.org/whl/nightly/cu128 \
         vllm==0.10.1+gptoss
 
 # Setup for Option 2: Building the Image with the Model included

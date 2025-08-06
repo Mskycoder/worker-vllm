@@ -4,15 +4,14 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1
 RUN apt-get update -y \
     && apt-get install -y python3-pip
 
-RUN ldconfig /usr/local/cuda-12.1/compat/
+RUN ldconfig
 
 # Install Python dependencies
 COPY builder/requirements.txt /requirements.txt
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m pip install --upgrade pip && \
-    python3 -m pip install --upgrade -r /requirements.txt
+    python3 -m pip install -r /requirements.txt
 
-# ─── CUDA 12.8 wheels for Torch 2.7  + vLLM 0.10.1 ─────────────────────
+# ─── CUDA 12.8 wheels • Torch 2.9-dev • vLLM 0.10.1 ─────────────
 RUN python3 -m pip install --pre \
         --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
         --extra-index-url https://download.pytorch.org/whl/nightly/cu128 \

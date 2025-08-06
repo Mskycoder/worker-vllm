@@ -16,9 +16,7 @@ RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install --pre \
         --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
         --extra-index-url https://download.pytorch.org/whl/cu128 \
-        vllm==0.10.1+gptoss && \
-    python3 -m pip install \
-        -f https://flashinfer.ai/whl/cu128/torch2.7/index.html
+        vllm==0.10.1+gptoss
 
 # Setup for Option 2: Building the Image with the Model included
 ARG MODEL_NAME="openai/gpt-oss-120b"

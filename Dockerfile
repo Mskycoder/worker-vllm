@@ -29,7 +29,7 @@ RUN python3 -m pip install --upgrade pip && \
         -i https://flashinfer.ai/whl/cu128/torch2.3
 
 # Setup for Option 2: Building the Image with the Model included
-ARG MODEL_NAME=""
+ARG MODEL_NAME="openai/gpt-oss-120b"
 ARG TOKENIZER_NAME=""
 ARG BASE_PATH="/runpod-volume"
 ARG QUANTIZATION=""
@@ -48,7 +48,11 @@ ENV MODEL_NAME=$MODEL_NAME \
     HF_HUB_ENABLE_HF_TRANSFER=0 
 
 ENV PYTHONPATH="/:/vllm-workspace"
-
+ENV MODEL_NAME="openai/gpt-oss-120b"
+# optional but useful defaults
+ENV DTYPE="auto" \
+    MAX_MODEL_LEN="32768" \
+    GPU_MEMORY_UTILIZATION="0.95"
 
 COPY src /src
 RUN --mount=type=secret,id=HF_TOKEN,required=false \

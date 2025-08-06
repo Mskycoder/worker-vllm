@@ -11,13 +11,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade -r /requirements.txt
 
-# ─── CUDA 12.8 wheels for both Torch and vLLM ──────────────────────────
+# ─── CUDA 12.8 wheels for Torch 2.7  + vLLM 0.10.1 ─────────────────────
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install --pre \
         --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
         --extra-index-url https://download.pytorch.org/whl/cu128 \
-        vllm==0.10.1+gptoss \
-    python3 -m pip install flashinfer-python \
+        vllm==0.10.1+gptoss && \
+    python3 -m pip install \
         -f https://flashinfer.ai/whl/cu128/torch2.7/index.html
 
 # Setup for Option 2: Building the Image with the Model included

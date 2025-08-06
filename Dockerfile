@@ -1,4 +1,5 @@
 FROM nvidia/cuda:12.8.0-runtime-ubuntu24.04
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN apt-get update -y \
     && apt-get install -y python3-pip

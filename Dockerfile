@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.1.0-base-ubuntu22.04 
+FROM nvidia/cuda:12.8.0-runtime-ubuntu24.04
 
 RUN apt-get update -y \
     && apt-get install -y python3-pip
@@ -12,8 +12,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade -r /requirements.txt
 
 # ─── CUDA 12.8 wheels for Torch 2.7  + vLLM 0.10.1 ─────────────────────
-RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install --pre \
+RUN python3 -m pip install --pre \
         --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
         --extra-index-url https://download.pytorch.org/whl/nightly/cu128 \
         vllm==0.10.1+gptoss

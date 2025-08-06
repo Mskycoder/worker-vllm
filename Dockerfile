@@ -11,23 +11,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python3 -m pip install --upgrade pip && \
     python3 -m pip install --upgrade -r /requirements.txt
 
-# ------------------------------------------------------------------
-# Install PyTorch 2.3 + CUDA 12.8, vLLM 0.10.1 + gptoss and FlashInfer
-# ------------------------------------------------------------------
+# ─── CUDA 12.8 wheels for both Torch and vLLM ──────────────────────────
 RUN python3 -m pip install --upgrade pip && \
-    # 1️⃣  Torch + CUDA 12.8  (stable wheels live in the cu128 index)
-    python3 -m pip install --pre \
-        --extra-index-url https://download.pytorch.org/whl/cu128 \
-        torch==2.3.0+cu128 torchvision==0.18.0+cu128 \
-    && \
-    # 2️⃣  vLLM 0.10.1+gptoss
     python3 -m pip install --pre \
         --extra-index-url https://wheels.vllm.ai/gpt-oss/ \
+        --extra-index-url https://download.pytorch.org/whl/cu128 \
         vllm==0.10.1+gptoss \
-    && \
-    # 3️⃣  FlashInfer kernels
-    python3 -m pip install flashinfer-python==0.1.5 \
-        -f https://flashinfer.ai/whl/cu128/torch2.3/index.html
+        flashinfer-python==0.1.5 \
+        -f https://flashinfer.ai/whl/cu128/torch2.7/index.html
 
 # Setup for Option 2: Building the Image with the Model included
 ARG MODEL_NAME="openai/gpt-oss-120b"
